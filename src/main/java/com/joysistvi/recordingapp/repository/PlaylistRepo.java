@@ -15,12 +15,6 @@ public interface PlaylistRepo {
     List<Playlist> searchPlaylist(String keyword);
 
     boolean createPlaylist(String dateCreated, int userId);
-
-    boolean updatePlaylist(
-            String dateCreated,
-            int userId,
-            int id
-    );
-
+    boolean updatePlaylist(String dateCreated, int userId, int id);
     boolean deletePlaylist(int id);
 }

@@ -12,8 +12,6 @@ public interface SongRepo {
     List<Song> searchSong(String keyword);
 
     boolean createSong(String title, String genre, int albumId);
-
     boolean updateSong(String title, String genre, int albumId, int id);
-
     boolean deleteSong(int id);
 }

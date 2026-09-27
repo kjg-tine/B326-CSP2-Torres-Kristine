@@ -99,12 +99,7 @@ public class AlbumServiceImpl implements AlbumService {
             return false;
         }
 
-        return albumRepo.updateAlbum(
-                album.getName().trim(),
-                album.getYear().trim(),
-                album.getArtistId(),
-                album.getId()
-        );
+        return albumRepo.updateAlbum(album.getName().trim(), album.getYear().trim(), album.getArtistId(), album.getId());
     }
 
     @Override

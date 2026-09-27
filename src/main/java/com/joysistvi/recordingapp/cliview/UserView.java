@@ -76,15 +76,10 @@ public class UserView {
                     break;
 
                 case 0:
-                    System.out.println(
-                            "Logging out..."
-                    );
-                    break;
+                    System.out.println("Logging out...");break;
 
                 default:
-                    System.out.println(
-                            "Invalid option. Please try again."
-                    );
+                    System.out.println("Invalid option. Please try again.");
             }
 
         } while (choice != 0);
@@ -93,75 +88,33 @@ public class UserView {
     private void printMenu() {
 
         System.out.println();
-        System.out.println(
-                "========================================"
-        );
-        System.out.println(
-                "              USER DASHBOARD"
-        );
-        System.out.println(
-                "========================================"
-        );
-        System.out.println(
-                "Welcome, "
-                        + loggedInUser.getUsername()
-        );
-        System.out.println();
-
-        System.out.println(
-                "1. View Artists"
-        );
-
-        System.out.println(
-                "2. View Albums"
-        );
-
-        System.out.println(
-                "3. View Songs"
-        );
-
-        System.out.println(
-                "4. Search"
-        );
-
-        System.out.println(
-                "5. My Playlists"
-        );
-
-        System.out.println(
-                "0. Logout"
-        );
-
-        System.out.println(
-                "========================================"
-        );
+        System.out.println("========================================");
+        System.out.println("              USER DASHBOARD");
+        System.out.println("========================================");
+        System.out.println("Welcome, " + loggedInUser.getUsername());
+        System.out.println();System.out.println("1. View Artists");
+        System.out.println("2. View Albums");
+        System.out.println("3. View Songs");
+        System.out.println("4. Search");
+        System.out.println("5. My Playlists");
+        System.out.println("0. Logout");
+        System.out.println("========================================");
     }
 
     private void viewArtists() {
 
         System.out.println();
-        System.out.println(
-                "----------- ARTISTS -----------"
-        );
+        System.out.println("----------- ARTISTS -----------");
 
-        List<Artist> artists =
-                artistController.handleViewAllArtists();
+        List<Artist> artists = artistController.handleViewAllArtists();
 
-        if (artists == null ||
-                artists.isEmpty()) {
-
-            System.out.println(
-                    "No artists found."
-            );
-
+        if (artists == null || artists.isEmpty()) {
+            System.out.println("No artists found.");
             return;
         }
 
-        String border =
-                "+------+------------------------------+";
-
+        String border = "+------+------------------------------+";
         System.out.println(border);
-
         System.out.printf(
                 "| %-4s | %-28s |%n",
                 "ID",
@@ -185,25 +138,16 @@ public class UserView {
     private void viewAlbums() {
 
         System.out.println();
-        System.out.println(
-                "----------- ALBUMS -----------"
-        );
+        System.out.println("----------- ALBUMS -----------");
 
-        List<Album> albums =
-                albumController.handleViewAllAlbums();
+        List<Album> albums = albumController.handleViewAllAlbums();
 
-        if (albums == null ||
-                albums.isEmpty()) {
-
-            System.out.println(
-                    "No albums found."
-            );
-
+        if (albums == null || albums.isEmpty()) {
+            System.out.println("No albums found.");
             return;
         }
 
-        String border =
-                "+------+------------------------------+------+";
+        String border = "+------+------------------------------+------+";
 
         System.out.println(border);
 
@@ -232,25 +176,16 @@ public class UserView {
     private void viewSongs() {
 
         System.out.println();
-        System.out.println(
-                "----------- SONGS -----------"
-        );
+        System.out.println("----------- SONGS -----------");
 
-        List<Song> songs =
-                songController.handleViewAllSongs();
+        List<Song> songs = songController.handleViewAllSongs();
 
-        if (songs == null ||
-                songs.isEmpty()) {
-
-            System.out.println(
-                    "No songs found."
-            );
-
+        if (songs == null || songs.isEmpty()) {
+            System.out.println("No songs found.");
             return;
         }
 
-        String border =
-                "+------+------------------------------+----------------+";
+        String border = "+------+------------------------------+----------------+";
 
         System.out.println(border);
 
@@ -294,8 +229,7 @@ public class UserView {
         System.out.println();
         System.out.println("----------- ARTISTS -----------");
 
-        List<Artist> artists =
-                artistController.handleSearchArtist(keyword);
+        List<Artist> artists = artistController.handleSearchArtist(keyword);
 
         if (artists == null || artists.isEmpty()) {
             System.out.println("No artists found.");
@@ -328,15 +262,13 @@ public class UserView {
         System.out.println();
         System.out.println("----------- ALBUMS -----------");
 
-        List<Album> albums =
-                albumController.handleSearchAlbum(keyword);
+        List<Album> albums = albumController.handleSearchAlbum(keyword);
 
         if (albums == null || albums.isEmpty()) {
             System.out.println("No albums found.");
         } else {
 
-            String border =
-                    "+------+------------------------------+----------+";
+            String border = "+------+------------------------------+----------+";
 
             System.out.println(border);
 
@@ -363,15 +295,13 @@ public class UserView {
         System.out.println();
         System.out.println("----------- SONGS -----------");
 
-        List<Song> songs =
-                songController.handleSearchSong(keyword);
+        List<Song> songs = songController.handleSearchSong(keyword);
 
         if (songs == null || songs.isEmpty()) {
             System.out.println("No songs found.");
         } else {
 
-            String border =
-                    "+------+------------------------------+----------------+----------+";
+            String border = "+------+------------------------------+----------------+----------+";
 
             System.out.println(border);
 
@@ -418,16 +348,12 @@ public class UserView {
         while (true) {
 
             try {
-
                 return Integer.parseInt(
                         scanner.nextLine().trim()
                 );
 
             } catch (NumberFormatException e) {
-
-                System.out.print(
-                        "Invalid input. Please enter a number: "
-                );
+                System.out.print("Invalid input. Please enter a number: ");
             }
         }
     }

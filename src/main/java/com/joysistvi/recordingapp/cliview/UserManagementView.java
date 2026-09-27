@@ -23,17 +23,13 @@ public class UserManagementView {
     }
 
     public void run() {
-
         int choice = -1;
 
         do {
-
             printMenu();
-
             choice = readInt("Enter choice: ");
 
             switch (choice) {
-
                 case 1:
                     viewAllUsers();
                     break;
@@ -66,35 +62,16 @@ public class UserManagementView {
     }
 
     private void printMenu() {
-
         System.out.println();
-        System.out.println(
-                "========================================"
-        );
-        System.out.println(
-                "            USER MANAGEMENT"
-        );
-        System.out.println(
-                "========================================"
-        );
-        System.out.println(
-                "1. View All Users"
-        );
-        System.out.println(
-                "2. Add User"
-        );
-        System.out.println(
-                "3. Update User Role"
-        );
-        System.out.println(
-                "4. Delete User"
-        );
-        System.out.println(
-                "0. Back"
-        );
-        System.out.println(
-                "========================================"
-        );
+        System.out.println("========================================");
+        System.out.println("            USER MANAGEMENT");
+        System.out.println("========================================");
+        System.out.println("1. View All Users");
+        System.out.println("2. Add User");
+        System.out.println("3. Update User Role");
+        System.out.println("4. Delete User");
+        System.out.println("0. Back");
+        System.out.println("========================================");
     }
 
     // ========================================
@@ -102,34 +79,21 @@ public class UserManagementView {
     // ========================================
 
     private void viewAllUsers() {
-
         System.out.println();
-        System.out.println(
-                "----------- ALL USERS -----------"
-        );
+        System.out.println("----------- ALL USERS -----------");
 
-        List<User> users =
-                userController.handleViewAllUsers();
+        List<User> users = userController.handleViewAllUsers();
 
         displayUsers(users);
     }
 
-    private void displayUsers(
-            List<User> users
-    ) {
-
-        if (users == null ||
-                users.isEmpty()) {
-
-            System.out.println(
-                    "No users found."
-            );
-
+    private void displayUsers(List<User> users) {
+        if (users == null || users.isEmpty()) {
+            System.out.println("No users found.");
             return;
         }
 
-        String border =
-                "+------+----------------------+----------+";
+        String border = "+------+----------------------+----------+";
 
         System.out.println(border);
 
@@ -143,7 +107,6 @@ public class UserManagementView {
         System.out.println(border);
 
         for (User user : users) {
-
             System.out.printf(
                     "| %-4d | %-20s | %-8s |%n",
                     user.getId(),
@@ -160,61 +123,38 @@ public class UserManagementView {
     // ========================================
 
     private void addUser() {
-
         System.out.println();
-        System.out.println(
-                "----------- ADD USER -----------"
-        );
+        System.out.println("----------- ADD USER -----------");
 
         System.out.print("Username: ");
-
-        String username =
-                scanner.nextLine().trim();
+        String username = scanner.nextLine().trim();
 
         if (username.isEmpty()) {
-
-            System.out.println(
-                    "Username cannot be empty."
-            );
-
+            System.out.println("Username cannot be empty.");
             return;
         }
 
         System.out.print("Password: ");
-
-        String password =
-                scanner.nextLine().trim();
+        String password = scanner.nextLine().trim();
 
         if (password.isEmpty()) {
-
-            System.out.println(
-                    "Password cannot be empty."
-            );
-
+            System.out.println("Password cannot be empty.");
             return;
         }
 
-        boolean success =
-                userController.handleRegister(
-                        username,
-                        password
-                );
+        boolean success = userController.handleRegister(
+                username,
+                password
+        );
 
         if (success) {
-
-            System.out.println(
-                    "User registered successfully!"
-            );
-
+            System.out.println("User registered successfully!");
             System.out.println();
 
             viewAllUsers();
 
         } else {
-
-            System.out.println(
-                    "Failed to register user."
-            );
+            System.out.println("Failed to register user.");
         }
     }
 
@@ -223,96 +163,54 @@ public class UserManagementView {
     // ========================================
 
     private void updateUserRole() {
-
         System.out.println();
-        System.out.println(
-                "----------- UPDATE USER ROLE -----------"
-        );
+        System.out.println("----------- UPDATE USER ROLE -----------");
 
         viewAllUsers();
 
-        int userId =
-                readInt("Enter User ID: ");
+        int userId = readInt("Enter User ID: ");
 
-        User user =
-                userController.handleGetUserById(
-                        userId
-                );
+        User user = userController.handleGetUserById(userId);
 
         if (user == null) {
-
-            System.out.println(
-                    "User not found."
-            );
-
+            System.out.println("User not found.");
             return;
         }
 
-        System.out.println(
-                "Username: "
-                        + user.getUsername()
-        );
-
-        System.out.println(
-                "Current Role: "
-                        + user.getRole()
-        );
+        System.out.println("Username: " + user.getUsername());
+        System.out.println("Current Role: " + user.getRole());
 
         System.out.println();
-        System.out.println(
-                "Available roles:"
-        );
-        System.out.println(
-                "1. user"
-        );
-        System.out.println(
-                "2. admin"
-        );
+        System.out.println("Available roles:");
+        System.out.println("1. user");
+        System.out.println("2. admin");
 
-        int roleChoice =
-                readInt("Enter new role: ");
+        int roleChoice = readInt("Enter new role: ");
 
         String newRole;
 
         if (roleChoice == 1) {
-
             newRole = "user";
 
         } else if (roleChoice == 2) {
-
             newRole = "admin";
 
         } else {
-
-            System.out.println(
-                    "Invalid role option."
-            );
-
+            System.out.println("Invalid role option.");
             return;
         }
 
-        boolean success =
-                userController.handleUpdateUserRole(
-                        userId,
-                        newRole
-                );
+        boolean success = userController.handleUpdateUserRole(
+                userId,
+                newRole
+        );
 
         if (success) {
-
-            System.out.println(
-                    "User role updated successfully!"
-            );
-
-            System.out.println(
-                    "New Role: "
-                            + newRole
-            );
+            System.out.println("User role updated successfully!");
+            System.out.println("New Role: " + newRole);
 
         } else {
-
-            System.out.println(
-                    "Failed to update user role."
-            );
+            System.out.println("Failed to update user role.");
         }
     }
 
@@ -321,95 +219,53 @@ public class UserManagementView {
     // ========================================
 
     private void deleteUser() {
-
         System.out.println();
-        System.out.println(
-                "----------- DELETE USER -----------"
-        );
+        System.out.println("----------- DELETE USER -----------");
 
         viewAllUsers();
 
-        int userId =
-                readInt("Enter User ID: ");
+        int userId = readInt("Enter User ID: ");
 
         // Prevent admin from deleting their own account
         if (userId == loggedInUser.getId()) {
-
-            System.out.println(
-                    "You cannot delete your own account."
-            );
-
+            System.out.println("You cannot delete your own account.");
             return;
         }
 
-        User user =
-                userController.handleGetUserById(
-                        userId
-                );
+        User user = userController.handleGetUserById(userId);
 
         if (user == null) {
-
-            System.out.println(
-                    "User not found."
-            );
-
+            System.out.println("User not found.");
             return;
         }
 
         System.out.println();
-        System.out.println(
-                "Selected User:"
-        );
+        System.out.println("Selected User:");
 
-        System.out.println(
-                "ID: "
-                        + user.getId()
-        );
-
-        System.out.println(
-                "Username: "
-                        + user.getUsername()
-        );
-
-        System.out.println(
-                "Role: "
-                        + user.getRole()
-        );
+        System.out.println("ID: " + user.getId());
+        System.out.println("Username: " + user.getUsername());
+        System.out.println("Role: " + user.getRole());
 
         System.out.print(
                 "Are you sure you want to delete this user? (Y/N): "
         );
 
-        String confirmation =
-                scanner.nextLine()
-                        .trim()
-                        .toLowerCase();
+        String confirmation = scanner.nextLine()
+                .trim()
+                .toLowerCase();
 
         if (!confirmation.equals("y")) {
-
-            System.out.println(
-                    "Delete cancelled."
-            );
-
+            System.out.println("Delete cancelled.");
             return;
         }
 
-        boolean success =
-                userController.handleDeleteUser(
-                        userId
-                );
+        boolean success = userController.handleDeleteUser(userId);
 
         if (success) {
-
-            System.out.println(
-                    "User deleted successfully!"
-            );
+            System.out.println("User deleted successfully!");
 
         } else {
-
-            System.out.println(
-                    "Failed to delete user."
-            );
+            System.out.println("Failed to delete user.");
         }
     }
 
@@ -418,22 +274,14 @@ public class UserManagementView {
     // ========================================
 
     private int readInt(String prompt) {
-
         System.out.print(prompt);
 
         while (true) {
-
             try {
-
-                return Integer.parseInt(
-                        scanner.nextLine().trim()
-                );
+                return Integer.parseInt(scanner.nextLine().trim());
 
             } catch (NumberFormatException e) {
-
-                System.out.print(
-                        "Invalid input. Please enter a number: "
-                );
+                System.out.print("Invalid input. Please enter a number: ");
             }
         }
     }

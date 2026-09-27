@@ -13,8 +13,6 @@ public interface SongService {
     List<Song> searchSong(String keyword);
 
     boolean createSong(Song song);
-
     boolean updateSong(Song song);
-
     boolean deleteSong(int id);
 }

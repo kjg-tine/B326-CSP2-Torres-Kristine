@@ -35,23 +35,17 @@ public class PlaylistView {
     }
 
     public void run() {
-
         int choice = -1;
 
         do {
-
             printMenu();
 
             System.out.print("Enter choice: ");
 
             try {
-
-                choice = Integer.parseInt(
-                        scanner.nextLine().trim()
-                );
+                choice = Integer.parseInt(scanner.nextLine().trim());
 
                 switch (choice) {
-
                     case 1:
                         viewAllPlaylists();
                         break;
@@ -77,23 +71,15 @@ public class PlaylistView {
                         break;
 
                     case 0:
-                        System.out.println(
-                                "Returning to admin dashboard..."
-                        );
+                        System.out.println("Returning to admin dashboard...");
                         break;
 
                     default:
-                        System.out.println(
-                                "Invalid option. Please try again."
-                        );
+                        System.out.println("Invalid option. Please try again.");
                 }
 
             } catch (NumberFormatException e) {
-
-                System.out.println(
-                        "Invalid input. Please enter a number."
-                );
-
+                System.out.println("Invalid input. Please enter a number.");
                 choice = -1;
             }
 
@@ -105,41 +91,18 @@ public class PlaylistView {
     // ========================================
 
     private void printMenu() {
-
         System.out.println();
-        System.out.println(
-                "========================================"
-        );
-        System.out.println(
-                "           MANAGE PLAYLISTS"
-        );
-        System.out.println(
-                "========================================"
-        );
-        System.out.println(
-                "1. View All Playlists"
-        );
-        System.out.println(
-                "2. Search Playlist"
-        );
-        System.out.println(
-                "3. Add Playlist"
-        );
-        System.out.println(
-                "4. Update Playlist"
-        );
-        System.out.println(
-                "5. Delete Playlist"
-        );
-        System.out.println(
-                "6. Manage Playlist Songs"
-        );
-        System.out.println(
-                "0. Back"
-        );
-        System.out.println(
-                "========================================"
-        );
+        System.out.println("========================================");
+        System.out.println("           MANAGE PLAYLISTS");
+        System.out.println("========================================");
+        System.out.println("1. View All Playlists");
+        System.out.println("2. Search Playlist");
+        System.out.println("3. Add Playlist");
+        System.out.println("4. Update Playlist");
+        System.out.println("5. Delete Playlist");
+        System.out.println("6. Manage Playlist Songs");
+        System.out.println("0. Back");
+        System.out.println("========================================");
     }
 
     // ========================================
@@ -147,14 +110,10 @@ public class PlaylistView {
     // ========================================
 
     private void viewAllPlaylists() {
-
         System.out.println();
-        System.out.println(
-                "----------- ALL PLAYLISTS -----------"
-        );
+        System.out.println("----------- ALL PLAYLISTS -----------");
 
-        List<Playlist> playlists =
-                playlistController.handleViewAllPlaylists();
+        List<Playlist> playlists = playlistController.handleViewAllPlaylists();
 
         displayPlaylists(playlists);
     }
@@ -164,36 +123,20 @@ public class PlaylistView {
     // ========================================
 
     private void searchPlaylist() {
-
         System.out.println();
-        System.out.println(
-                "----------- SEARCH PLAYLIST -----------"
-        );
+        System.out.println("----------- SEARCH PLAYLIST -----------");
 
-        System.out.println(
-                "Search by date created."
-        );
+        System.out.println("Search by date created.");
+        System.out.print("Enter keyword: ");
 
-        System.out.print(
-                "Enter keyword: "
-        );
-
-        String keyword =
-                scanner.nextLine().trim();
+        String keyword = scanner.nextLine().trim();
 
         if (keyword.isEmpty()) {
-
-            System.out.println(
-                    "Search keyword cannot be empty."
-            );
-
+            System.out.println("Search keyword cannot be empty.");
             return;
         }
 
-        List<Playlist> playlists =
-                playlistController.handleSearchPlaylist(
-                        keyword
-                );
+        List<Playlist> playlists = playlistController.handleSearchPlaylist(keyword);
 
         displayPlaylists(playlists);
     }
@@ -203,27 +146,17 @@ public class PlaylistView {
     // ========================================
 
     private void displayUsers() {
-
-        List<User> users =
-                userController.handleViewAllUsers();
+        List<User> users = userController.handleViewAllUsers();
 
         if (users == null || users.isEmpty()) {
-
-            System.out.println(
-                    "No users found."
-            );
-
+            System.out.println("No users found.");
             return;
         }
 
-        String border =
-                "+------+----------------------+----------+";
+        String border = "+------+----------------------+----------+";
 
         System.out.println();
-        System.out.println(
-                "----------- AVAILABLE USERS -----------"
-        );
-
+        System.out.println("----------- AVAILABLE USERS -----------");
         System.out.println(border);
 
         System.out.printf(
@@ -236,7 +169,6 @@ public class PlaylistView {
         System.out.println(border);
 
         for (User user : users) {
-
             System.out.printf(
                     "| %-4d | %-20s | %-8s |%n",
                     user.getId(),
@@ -253,81 +185,44 @@ public class PlaylistView {
     // ========================================
 
     private void addPlaylist() {
-
         System.out.println();
-        System.out.println(
-                "----------- ADD PLAYLIST -----------"
-        );
+        System.out.println("----------- ADD PLAYLIST -----------");
 
-        System.out.print(
-                "Enter date created (YYYY-MM-DD): "
-        );
+        System.out.print("Enter date created (YYYY-MM-DD): ");
 
-        String dateCreated =
-                scanner.nextLine().trim();
+        String dateCreated = scanner.nextLine().trim();
 
         if (dateCreated.isEmpty()) {
-
-            System.out.println(
-                    "Date cannot be empty."
-            );
-
+            System.out.println("Date cannot be empty.");
             return;
         }
 
         if (!isValidDate(dateCreated)) {
-
-            System.out.println(
-                    "Invalid date. Please use YYYY-MM-DD."
-            );
-
+            System.out.println("Invalid date. Please use YYYY-MM-DD.");
             return;
         }
 
         displayUsers();
 
-        int userId =
-                readInt("Enter User ID: ");
+        int userId = readInt("Enter User ID: ");
 
-        User user =
-                userController.handleGetUserById(userId);
+        User user = userController.handleGetUserById(userId);
 
         if (user == null) {
-
-            System.out.println(
-                    "User not found."
-            );
-
+            System.out.println("User not found.");
             return;
         }
 
-        System.out.println(
-                "Selected User: "
-                        + user.getUsername()
-        );
+        System.out.println("Selected User: " + user.getUsername());
 
-        Playlist playlist =
-                new Playlist(
-                        dateCreated,
-                        userId
-                );
+        Playlist playlist = new Playlist(dateCreated, userId);
 
-        boolean success =
-                playlistController.handleCreatePlaylist(
-                        playlist
-                );
+        boolean success = playlistController.handleCreatePlaylist(playlist);
 
         if (success) {
-
-            System.out.println(
-                    "Playlist created successfully!"
-            );
-
+            System.out.println("Playlist created successfully!");
         } else {
-
-            System.out.println(
-                    "Failed to create playlist."
-            );
+            System.out.println("Failed to create playlist.");
         }
     }
 
@@ -336,134 +231,73 @@ public class PlaylistView {
     // ========================================
 
     private void updatePlaylist() {
-
         System.out.println();
-        System.out.println(
-                "----------- UPDATE PLAYLIST -----------"
-        );
+        System.out.println("----------- UPDATE PLAYLIST -----------");
 
         viewAllPlaylists();
 
-        int playlistId =
-                readInt("Enter Playlist ID: ");
+        int playlistId = readInt("Enter Playlist ID: ");
 
-        Playlist existingPlaylist =
-                playlistController.handleGetPlaylistById(
-                        playlistId
-                );
+        Playlist existingPlaylist = playlistController.handleGetPlaylistById(playlistId);
 
         if (existingPlaylist == null) {
-
-            System.out.println(
-                    "Playlist not found."
-            );
-
+            System.out.println("Playlist not found.");
             return;
         }
 
-        System.out.println(
-                "Current Date Created: "
-                        + existingPlaylist.getDateCreated()
-        );
+        System.out.println("Current Date Created: " + existingPlaylist.getDateCreated());
 
-        System.out.print(
-                "Enter new date created (Enter to keep current): "
-        );
+        System.out.print("Enter new date created (Enter to keep current): ");
 
-        String dateCreated =
-                scanner.nextLine().trim();
+        String dateCreated = scanner.nextLine().trim();
 
         if (dateCreated.isEmpty()) {
-
-            dateCreated =
-                    existingPlaylist.getDateCreated();
+            dateCreated = existingPlaylist.getDateCreated();
 
         } else if (!isValidDate(dateCreated)) {
-
-            System.out.println(
-                    "Invalid date. Please use YYYY-MM-DD."
-            );
-
+            System.out.println("Invalid date. Please use YYYY-MM-DD.");
             return;
         }
 
-        System.out.println(
-                "Current User ID: "
-                        + existingPlaylist.getUserId()
-        );
+        System.out.println("Current User ID: " + existingPlaylist.getUserId());
 
-        User currentUser =
-                userController.handleGetUserById(
-                        existingPlaylist.getUserId()
-                );
+        User currentUser = userController.handleGetUserById(existingPlaylist.getUserId());
 
         if (currentUser != null) {
-
-            System.out.println(
-                    "Current Username: "
-                            + currentUser.getUsername()
-            );
+            System.out.println("Current Username: " + currentUser.getUsername());
         }
 
         displayUsers();
 
-        System.out.print(
-                "Enter new User ID (0 to keep current): "
-        );
+        System.out.print("Enter new User ID (0 to keep current): ");
 
-        int userId =
-                readIntAllowZero();
+        int userId = readIntAllowZero();
 
         if (userId == 0) {
-
-            userId =
-                    existingPlaylist.getUserId();
-
+            userId = existingPlaylist.getUserId();
         } else {
-
-            User newUser =
-                    userController.handleGetUserById(
-                            userId
-                    );
+            User newUser = userController.handleGetUserById(userId);
 
             if (newUser == null) {
-
-                System.out.println(
-                        "User not found."
-                );
-
+                System.out.println("User not found.");
                 return;
             }
 
-            System.out.println(
-                    "Selected User: "
-                            + newUser.getUsername()
-            );
+            System.out.println("Selected User: " + newUser.getUsername());
         }
 
-        Playlist updatedPlaylist =
-                new Playlist(
-                        playlistId,
-                        dateCreated,
-                        userId
-                );
+        Playlist updatedPlaylist = new Playlist(
+                playlistId,
+                dateCreated,
+                userId
+        );
 
-        boolean success =
-                playlistController.handleUpdatePlaylist(
-                        updatedPlaylist
-                );
+        boolean success = playlistController.handleUpdatePlaylist(updatedPlaylist);
 
         if (success) {
-
-            System.out.println(
-                    "Playlist updated successfully!"
-            );
-
+            System.out.println("Playlist updated successfully!");
         } else {
-
-            System.out.println(
-                    "Failed to update playlist."
-            );
+            System.out.println("Failed to update playlist.");
         }
     }
 
@@ -472,91 +306,47 @@ public class PlaylistView {
     // ========================================
 
     private void deletePlaylist() {
-
         System.out.println();
-        System.out.println(
-                "----------- DELETE PLAYLIST -----------"
-        );
+        System.out.println("----------- DELETE PLAYLIST -----------");
 
         viewAllPlaylists();
 
-        int playlistId =
-                readInt("Enter Playlist ID: ");
+        int playlistId = readInt("Enter Playlist ID: ");
 
-        Playlist playlist =
-                playlistController.handleGetPlaylistById(
-                        playlistId
-                );
+        Playlist playlist = playlistController.handleGetPlaylistById(playlistId);
 
         if (playlist == null) {
-
-            System.out.println(
-                    "Playlist not found."
-            );
-
+            System.out.println("Playlist not found.");
             return;
         }
 
-        System.out.println(
-                "Playlist ID: "
-                        + playlist.getId()
-        );
+        System.out.println("Playlist ID: " + playlist.getId());
 
-        System.out.println(
-                "Date Created: "
-                        + playlist.getDateCreated()
-        );
+        System.out.println("Date Created: " + playlist.getDateCreated());
 
-        System.out.println(
-                "User ID: "
-                        + playlist.getUserId()
-        );
+        System.out.println("User ID: " + playlist.getUserId());
 
-        User user =
-                userController.handleGetUserById(
-                        playlist.getUserId()
-                );
+        User user = userController.handleGetUserById(playlist.getUserId());
 
         if (user != null) {
-
-            System.out.println(
-                    "Username: "
-                            + user.getUsername()
-            );
+            System.out.println("Username: " + user.getUsername());
         }
 
-        System.out.print(
-                "Are you sure you want to delete this playlist? (Y/N): "
-        );
+        System.out.print("Are you sure you want to delete this playlist? (Y/N): ");
 
-        String confirmation =
-                scanner.nextLine().trim();
+        String confirmation = scanner.nextLine().trim();
 
         if (!confirmation.equalsIgnoreCase("Y")) {
-
-            System.out.println(
-                    "Delete cancelled."
-            );
-
+            System.out.println("Delete cancelled.");
             return;
         }
 
-        boolean success =
-                playlistController.handleDeletePlaylist(
-                        playlistId
-                );
+        boolean success = playlistController.handleDeletePlaylist(playlistId);
 
         if (success) {
-
-            System.out.println(
-                    "Playlist deleted successfully!"
-            );
-
+            System.out.println("Playlist deleted successfully!");
         } else {
-
-            System.out.println(
-                    "Failed to delete playlist."
-            );
+            System.out.println("Failed to delete playlist.");
         }
     }
 
@@ -565,7 +355,6 @@ public class PlaylistView {
     // ========================================
 
     private void managePlaylistSongs() {
-
         PlaylistSongView playlistSongView =
                 new PlaylistSongView(
                         playlistSongController,
@@ -580,22 +369,13 @@ public class PlaylistView {
     // DISPLAY PLAYLISTS
     // ========================================
 
-    private void displayPlaylists(
-            List<Playlist> playlists
-    ) {
-
-        if (playlists == null ||
-                playlists.isEmpty()) {
-
-            System.out.println(
-                    "No playlists found."
-            );
-
+    private void displayPlaylists(List<Playlist> playlists) {
+        if (playlists == null || playlists.isEmpty()) {
+            System.out.println("No playlists found.");
             return;
         }
 
-        String border =
-                "+------+----------------------+-----------+----------------+";
+        String border = "+------+----------------------+-----------+----------------+";
 
         System.out.println(border);
 
@@ -610,14 +390,9 @@ public class PlaylistView {
         System.out.println(border);
 
         for (Playlist playlist : playlists) {
+            User user = userController.handleGetUserById(playlist.getUserId());
 
-            User user =
-                    userController.handleGetUserById(
-                            playlist.getUserId()
-                    );
-
-            String username =
-                    user != null
+            String username = user != null
                             ? user.getUsername()
                             : "Unknown";
 
@@ -638,15 +413,11 @@ public class PlaylistView {
     // ========================================
 
     private boolean isValidDate(String date) {
-
         try {
-
             LocalDate.parse(date);
-
             return true;
 
         } catch (DateTimeParseException e) {
-
             return false;
         }
     }
@@ -656,34 +427,21 @@ public class PlaylistView {
     // ========================================
 
     private int readInt(String prompt) {
-
         System.out.print(prompt);
 
         while (true) {
-
             try {
-
-                int value =
-                        Integer.parseInt(
-                                scanner.nextLine().trim()
-                        );
+                int value = Integer.parseInt(scanner.nextLine().trim());
 
                 if (value <= 0) {
-
-                    System.out.print(
-                            "Enter a number greater than 0: "
-                    );
-
+                    System.out.print("Enter a number greater than 0: ");
                     continue;
                 }
 
                 return value;
 
             } catch (NumberFormatException e) {
-
-                System.out.print(
-                        "Invalid input. Enter a valid number: "
-                );
+                System.out.print("Invalid input. Enter a valid number: ");
             }
         }
     }
@@ -693,32 +451,19 @@ public class PlaylistView {
     // ========================================
 
     private int readIntAllowZero() {
-
         while (true) {
-
             try {
-
-                int value =
-                        Integer.parseInt(
-                                scanner.nextLine().trim()
-                        );
+                int value = Integer.parseInt(scanner.nextLine().trim());
 
                 if (value < 0) {
-
-                    System.out.print(
-                            "Enter 0 or a positive number: "
-                    );
-
+                    System.out.print("Enter 0 or a positive number: ");
                     continue;
                 }
 
                 return value;
 
             } catch (NumberFormatException e) {
-
-                System.out.print(
-                        "Invalid input. Enter a valid number: "
-                );
+                System.out.print("Invalid input. Enter a valid number: ");
             }
         }
     }

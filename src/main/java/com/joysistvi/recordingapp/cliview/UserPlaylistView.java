@@ -88,65 +88,32 @@ public class UserPlaylistView {
     private void printMenu() {
 
         System.out.println();
-        System.out.println(
-                "========================================"
-        );
-        System.out.println(
-                "             MY PLAYLISTS"
-        );
-        System.out.println(
-                "========================================"
-        );
-        System.out.println(
-                "1. View My Playlists"
-        );
-        System.out.println(
-                "2. Create Playlist"
-        );
-        System.out.println(
-                "3. View Songs in Playlist"
-        );
-        System.out.println(
-                "4. Add Song to Playlist"
-        );
-        System.out.println(
-                "5. Remove Song from Playlist"
-        );
-        System.out.println(
-                "6. Delete Playlist"
-        );
-        System.out.println(
-                "0. Back"
-        );
-        System.out.println(
-                "========================================"
-        );
+        System.out.println("========================================");
+        System.out.println("             MY PLAYLISTS");
+        System.out.println("========================================");
+        System.out.println("1. View My Playlists");
+        System.out.println("2. Create Playlist");
+        System.out.println("3. View Songs in Playlist");
+        System.out.println("4. Add Song to Playlist");
+        System.out.println("5. Remove Song from Playlist");
+        System.out.println("6. Delete Playlist");
+        System.out.println("0. Back");
+        System.out.println("========================================");
     }
 
     private void viewMyPlaylists() {
 
         System.out.println();
-        System.out.println(
-                "----------- MY PLAYLISTS -----------"
-        );
+        System.out.println("----------- MY PLAYLISTS -----------");
 
-        List<Playlist> playlists =
-                playlistController.handleGetPlaylistsByUserId(
-                        loggedInUser.getId()
-                );
+        List<Playlist> playlists = playlistController.handleGetPlaylistsByUserId(loggedInUser.getId());
 
-        if (playlists == null ||
-                playlists.isEmpty()) {
-
-            System.out.println(
-                    "You don't have any playlists."
-            );
-
+        if (playlists == null || playlists.isEmpty()) {
+            System.out.println("You don't have any playlists.");
             return;
         }
 
-        String border =
-                "+------+----------------------+----------+";
+        String border = "+------+----------------------+----------+";
 
         System.out.println(border);
 
@@ -175,120 +142,67 @@ public class UserPlaylistView {
     private void createPlaylist() {
 
         System.out.println();
-        System.out.println(
-                "----------- CREATE PLAYLIST -----------"
-        );
+        System.out.println("----------- CREATE PLAYLIST -----------");
 
-        System.out.print(
-                "Date Created: "
-        );
+        System.out.print("Date Created: ");
 
-        String dateCreated =
-                scanner.nextLine().trim();
+        String dateCreated = scanner.nextLine().trim();
 
         if (dateCreated.isEmpty()) {
-
-            System.out.println(
-                    "Date created cannot be empty."
-            );
-
+            System.out.println("Date created cannot be empty.");
             return;
         }
 
-        Playlist playlist =
-                new Playlist(
-                        dateCreated,
-                        loggedInUser.getId()
-                );
+        Playlist playlist = new Playlist(dateCreated, loggedInUser.getId());
 
-        boolean success =
-                playlistController.handleCreatePlaylist(
-                        playlist
-                );
+        boolean success = playlistController.handleCreatePlaylist(playlist);
 
         if (success) {
-
-            System.out.println(
-                    "Playlist created successfully!"
-            );
-
+            System.out.println("Playlist created successfully!");
         } else {
-
-            System.out.println(
-                    "Failed to create playlist."
-            );
+            System.out.println("Failed to create playlist.");
         }
     }
 
     private void viewSongsInPlaylist() {
 
         System.out.println();
-        System.out.println(
-                "----------- VIEW SONGS IN PLAYLIST -----------"
-        );
+        System.out.println("----------- VIEW SONGS IN PLAYLIST -----------");
 
-        int playlistId =
-                readInt("Playlist ID: ");
+        int playlistId = readInt("Playlist ID: ");
 
         if (!isMyPlaylist(playlistId)) {
-
-            System.out.println(
-                    "Playlist not found."
-            );
-
+            System.out.println("Playlist not found.");
             return;
         }
 
-        List<PlaylistSong> playlistSongs =
-                playlistSongController
-                        .handleGetSongsByPlaylistId(
-                                playlistId
-                        );
-
-        displayPlaylistSongs(
-                playlistSongs
-        );
+        List<PlaylistSong> playlistSongs = playlistSongController.handleGetSongsByPlaylistId(playlistId);
+        displayPlaylistSongs(playlistSongs);
     }
 
     private void addSongToPlaylist() {
 
         System.out.println();
-        System.out.println(
-                "----------- ADD SONG TO PLAYLIST -----------"
-        );
+        System.out.println("----------- ADD SONG TO PLAYLIST -----------");
 
-        int playlistId =
-                readInt("Playlist ID: ");
+        int playlistId = readInt("Playlist ID: ");
 
         if (!isMyPlaylist(playlistId)) {
-
-            System.out.println(
-                    "Playlist not found."
-            );
-
+            System.out.println("Playlist not found.");
             return;
         }
 
         System.out.println();
-        System.out.println(
-                "----------- AVAILABLE SONGS -----------"
-        );
+        System.out.println("----------- AVAILABLE SONGS -----------");
 
-        List<Song> songs =
-                songController.handleViewAllSongs();
+        List<Song> songs = songController.handleViewAllSongs();
 
-        if (songs == null ||
-                songs.isEmpty()) {
-
-            System.out.println(
-                    "No songs available."
-            );
-
+        if (songs == null || songs.isEmpty()) {
+            System.out.println("No songs available.");
             return;
         }
 
-        String border =
-                "+------+------------------------------+";
+        String border = "+------+------------------------------+";
 
         System.out.println(border);
 
@@ -311,189 +225,97 @@ public class UserPlaylistView {
 
         System.out.println(border);
 
-        int songId =
-                readInt("Song ID: ");
+        int songId = readInt("Song ID: ");
 
-        Song song =
-                songController.handleGetSongById(
-                        songId
-                );
+        Song song = songController.handleGetSongById(songId);
 
         if (song == null) {
-
-            System.out.println(
-                    "Invalid Song ID. Song does not exist."
-            );
-
+            System.out.println("Invalid Song ID. Song does not exist.");
             return;
         }
 
-        boolean success =
-                playlistSongController
-                        .handleAddSongToPlaylist(
-                                playlistId,
-                                songId,
-                                loggedInUser.getId()
-                        );
+        boolean success = playlistSongController.handleAddSongToPlaylist(playlistId, songId, loggedInUser.getId());
 
         if (success) {
-
-            System.out.println(
-                    "Song added to playlist successfully!"
-            );
-
+            System.out.println("Song added to playlist successfully!");
         } else {
-
-            System.out.println(
-                    "Failed to add song to playlist."
-            );
+            System.out.println("Failed to add song to playlist.");
         }
     }
 
     private void removeSongFromPlaylist() {
 
         System.out.println();
-        System.out.println(
-                "----------- REMOVE SONG FROM PLAYLIST -----------"
+        System.out.println("----------- REMOVE SONG FROM PLAYLIST -----------"
         );
 
-        int playlistId =
-                readInt("Playlist ID: ");
+        int playlistId = readInt("Playlist ID: ");
 
         if (!isMyPlaylist(playlistId)) {
-
-            System.out.println(
-                    "Playlist not found."
-            );
-
+            System.out.println("Playlist not found.");
             return;
         }
 
-        List<PlaylistSong> playlistSongs =
-                playlistSongController
-                        .handleGetSongsByPlaylistId(
-                                playlistId
-                        );
+        List<PlaylistSong> playlistSongs = playlistSongController.handleGetSongsByPlaylistId(playlistId);
 
-        if (playlistSongs == null ||
-                playlistSongs.isEmpty()) {
-
-            System.out.println(
-                    "No songs found in this playlist."
-            );
-
+        if (playlistSongs == null || playlistSongs.isEmpty()) {
+            System.out.println("No songs found in this playlist.");
             return;
         }
 
-        displayPlaylistSongs(
-                playlistSongs
-        );
+        displayPlaylistSongs(playlistSongs);
 
-        int songId =
-                readInt("Song ID to remove: ");
+        int songId = readInt("Song ID to remove: ");
 
-        Song song =
-                songController.handleGetSongById(
-                        songId
-                );
+        Song song = songController.handleGetSongById(songId);
 
         if (song == null) {
-
-            System.out.println(
-                    "Invalid Song ID."
-            );
-
+            System.out.println("Invalid Song ID.");
             return;
         }
 
-        boolean success =
-                playlistSongController
-                        .handleRemoveSongFromPlaylist(
-                                playlistId,
-                                songId,
-                                loggedInUser.getId()
-                        );
+        boolean success = playlistSongController.handleRemoveSongFromPlaylist(playlistId, songId, loggedInUser.getId());
 
         if (success) {
-
-            System.out.println(
-                    "Song removed from playlist successfully!"
-            );
-
+            System.out.println("Song removed from playlist successfully!");
         } else {
-
-            System.out.println(
-                    "Failed to remove song from playlist."
-            );
+            System.out.println("Failed to remove song from playlist.");
         }
     }
 
     private void deletePlaylist() {
 
         System.out.println();
-        System.out.println(
-                "----------- DELETE PLAYLIST -----------"
-        );
+        System.out.println("----------- DELETE PLAYLIST -----------");
 
-        int playlistId =
-                readInt("Playlist ID: ");
+        int playlistId = readInt("Playlist ID: ");
 
         if (!isMyPlaylist(playlistId)) {
-
-            System.out.println(
-                    "Playlist not found."
-            );
-
+            System.out.println("Playlist not found.");
             return;
         }
 
-        System.out.print(
-                "Are you sure you want to delete this playlist? (Y/N): "
-        );
+        System.out.print("Are you sure you want to delete this playlist? (Y/N): ");
 
-        String confirmation =
-                scanner.nextLine()
-                        .trim()
-                        .toLowerCase();
+        String confirmation = scanner.nextLine().trim().toLowerCase();
 
         if (!confirmation.equals("y")) {
-
-            System.out.println(
-                    "Delete cancelled."
-            );
-
+            System.out.println("Delete cancelled.");
             return;
         }
 
-        boolean success =
-                playlistController.handleDeletePlaylist(
-                        playlistId,
-                        loggedInUser.getId()
-                );
+        boolean success = playlistController.handleDeletePlaylist(playlistId, loggedInUser.getId());
 
         if (success) {
-
-            System.out.println(
-                    "Playlist deleted successfully!"
-            );
-
+            System.out.println("Playlist deleted successfully!");
         } else {
-
-            System.out.println(
-                    "Failed to delete playlist."
-            );
+            System.out.println("Failed to delete playlist.");
         }
     }
 
-    private boolean isMyPlaylist(
-            int playlistId
-    ) {
+    private boolean isMyPlaylist(int playlistId) {
 
-        List<Playlist> playlists =
-                playlistController
-                        .handleGetPlaylistsByUserId(
-                                loggedInUser.getId()
-                        );
+        List<Playlist> playlists = playlistController.handleGetPlaylistsByUserId(loggedInUser.getId());
 
         if (playlists == null) {
             return false;
@@ -509,22 +331,14 @@ public class UserPlaylistView {
         return false;
     }
 
-    private void displayPlaylistSongs(
-            List<PlaylistSong> playlistSongs
-    ) {
+    private void displayPlaylistSongs(List<PlaylistSong> playlistSongs) {
 
-        if (playlistSongs == null ||
-                playlistSongs.isEmpty()) {
-
-            System.out.println(
-                    "No songs found in this playlist."
-            );
-
+        if (playlistSongs == null || playlistSongs.isEmpty()) {
+            System.out.println("No songs found in this playlist.");
             return;
         }
 
-        String border =
-                "+------+------------------------------+";
+        String border = "+------+------------------------------+";
 
         System.out.println(border);
 
@@ -536,20 +350,14 @@ public class UserPlaylistView {
 
         System.out.println(border);
 
-        for (PlaylistSong playlistSong :
-                playlistSongs) {
+        for (PlaylistSong playlistSong : playlistSongs) {
 
             String songTitle = "Unknown";
 
-            Song song =
-                    songController.handleGetSongById(
-                            playlistSong.getSongId()
-                    );
+            Song song = songController.handleGetSongById(playlistSong.getSongId());
 
             if (song != null) {
-
-                songTitle =
-                        song.getTitle();
+                songTitle = song.getTitle();
             }
 
             System.out.printf(
@@ -562,25 +370,17 @@ public class UserPlaylistView {
         System.out.println(border);
     }
 
-    private int readInt(
-            String prompt
-    ) {
+    private int readInt(String prompt) {
 
         System.out.print(prompt);
 
         while (true) {
 
             try {
-
-                return Integer.parseInt(
-                        scanner.nextLine().trim()
-                );
+                return Integer.parseInt(scanner.nextLine().trim());
 
             } catch (NumberFormatException e) {
-
-                System.out.print(
-                        "Invalid input. Please enter a number: "
-                );
+                System.out.print("Invalid input. Please enter a number: ");
             }
         }
     }

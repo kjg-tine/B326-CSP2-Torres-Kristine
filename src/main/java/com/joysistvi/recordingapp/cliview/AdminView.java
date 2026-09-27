@@ -85,39 +85,17 @@ public class AdminView {
     private void printMenu() {
 
         System.out.println();
-        System.out.println(
-                "========================================"
-        );
-        System.out.println(
-                "             ADMIN DASHBOARD"
-        );
-        System.out.println(
-                "========================================"
-        );
-        System.out.println(
-                "1. Manage Artists"
-        );
-        System.out.println(
-                "2. Manage Albums"
-        );
-        System.out.println(
-                "3. Manage Songs"
-        );
-        System.out.println(
-                "4. Manage Playlists"
-        );
-        System.out.println(
-                "5. Manage Playlist Songs"
-        );
-        System.out.println(
-                "6. Manage Users"
-        );
-        System.out.println(
-                "0. Logout"
-        );
-        System.out.println(
-                "========================================"
-        );
+        System.out.println("========================================");
+        System.out.println("             ADMIN DASHBOARD");
+        System.out.println("========================================");
+        System.out.println("1. Manage Artists");
+        System.out.println("2. Manage Albums");
+        System.out.println("3. Manage Songs");
+        System.out.println("4. Manage Playlists");
+        System.out.println("5. Manage Playlist Songs");
+        System.out.println("6. Manage Users");
+        System.out.println("0. Logout");
+        System.out.println("========================================");
     }
 
     private int readInt(String prompt) {
@@ -127,16 +105,9 @@ public class AdminView {
         while (true) {
 
             try {
-
-                return Integer.parseInt(
-                        scanner.nextLine().trim()
-                );
-
+                return Integer.parseInt(scanner.nextLine().trim());
             } catch (NumberFormatException e) {
-
-                System.out.print(
-                        "Invalid input. Please enter a number: "
-                );
+                System.out.print("Invalid input. Please enter a number: ");
             }
         }
     }

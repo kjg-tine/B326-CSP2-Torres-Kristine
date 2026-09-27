@@ -13,8 +13,6 @@ public interface AlbumRepo {
     List<Album> searchAlbum(String keyword);
 
     boolean createAlbum(String name, String year, int artistId);
-
     boolean updateAlbum(String name, String year, int artistId, int id);
-
     boolean deleteAlbum(int id);
 }

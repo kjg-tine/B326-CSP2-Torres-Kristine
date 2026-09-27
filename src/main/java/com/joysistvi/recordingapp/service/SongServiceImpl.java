@@ -66,11 +66,7 @@ public class SongServiceImpl implements SongService {
             return false;
         }
 
-        return songRepo.createSong(
-                song.getTitle().trim(),
-                song.getGenre().trim(),
-                song.getAlbumId()
-        );
+        return songRepo.createSong(song.getTitle().trim(), song.getGenre().trim(), song.getAlbumId());
     }
 
     @Override
@@ -95,12 +91,7 @@ public class SongServiceImpl implements SongService {
             return false;
         }
 
-        return songRepo.updateSong(
-                song.getTitle().trim(),
-                song.getGenre().trim(),
-                song.getAlbumId(),
-                song.getId()
-        );
+        return songRepo.updateSong(song.getTitle().trim(), song.getGenre().trim(), song.getAlbumId(), song.getId());
     }
 
     @Override

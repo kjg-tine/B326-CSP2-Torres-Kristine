@@ -8,30 +8,10 @@ public interface PlaylistSongService {
 
     List<PlaylistSong> getAllPlaylistSongs();
 
-    List<PlaylistSong> getSongsByPlaylistId(
-            int playlistId
-    );
+    List<PlaylistSong> getSongsByPlaylistId(int playlistId);
 
-    boolean addSongToPlaylist(
-            int playlistId,
-            int songId
-    );
-
-    boolean removeSongFromPlaylist(
-            int playlistId,
-            int songId
-    );
-
-    // User-protected methods
-    boolean addSongToPlaylist(
-            int playlistId,
-            int songId,
-            int userId
-    );
-
-    boolean removeSongFromPlaylist(
-            int playlistId,
-            int songId,
-            int userId
-    );
+    boolean addSongToPlaylist(int playlistId, int songId);
+    boolean removeSongFromPlaylist(int playlistId, int songId);
+    boolean addSongToPlaylist(int playlistId, int songId, int userId);
+    boolean removeSongFromPlaylist(int playlistId, int songId, int userId);
 }

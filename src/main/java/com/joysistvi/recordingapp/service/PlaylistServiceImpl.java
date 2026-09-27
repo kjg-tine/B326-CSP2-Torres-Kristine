@@ -5,14 +5,11 @@ import com.joysistvi.recordingapp.repository.PlaylistRepo;
 
 import java.util.List;
 
-public class PlaylistServiceImpl
-        implements PlaylistService {
+public class PlaylistServiceImpl implements PlaylistService {
 
     private final PlaylistRepo playlistRepo;
 
-    public PlaylistServiceImpl(
-            PlaylistRepo playlistRepo
-    ) {
+    public PlaylistServiceImpl(PlaylistRepo playlistRepo) {
         this.playlistRepo = playlistRepo;
     }
 
@@ -22,17 +19,12 @@ public class PlaylistServiceImpl
     }
 
     @Override
-    public List<Playlist> getPlaylistsByUserId(
-            int userId
-    ) {
-
+    public List<Playlist> getPlaylistsByUserId(int userId) {
         if (userId <= 0) {
             return List.of();
         }
 
-        return playlistRepo.getPlaylistsByUserId(
-                userId
-        );
+        return playlistRepo.getPlaylistsByUserId(userId);
     }
 
     @Override
@@ -46,35 +38,21 @@ public class PlaylistServiceImpl
     }
 
     @Override
-    public List<Playlist> searchPlaylist(
-            String keyword
-    ) {
-
-        if (keyword == null ||
-                keyword.trim().isEmpty()) {
-
+    public List<Playlist> searchPlaylist(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
             return List.of();
         }
 
-        return playlistRepo.searchPlaylist(
-                keyword.trim()
-        );
+        return playlistRepo.searchPlaylist(keyword.trim());
     }
 
     @Override
-    public boolean createPlaylist(
-            Playlist playlist
-    ) {
-
+    public boolean createPlaylist(Playlist playlist) {
         if (playlist == null) {
             return false;
         }
 
-        if (playlist.getDateCreated() == null ||
-                playlist.getDateCreated()
-                        .trim()
-                        .isEmpty()) {
-
+        if (playlist.getDateCreated() == null || playlist.getDateCreated().trim().isEmpty()) {
             return false;
         }
 
@@ -82,16 +60,11 @@ public class PlaylistServiceImpl
             return false;
         }
 
-        return playlistRepo.createPlaylist(
-                playlist.getDateCreated().trim(),
-                playlist.getUserId()
-        );
+        return playlistRepo.createPlaylist(playlist.getDateCreated().trim(), playlist.getUserId());
     }
 
     @Override
-    public boolean updatePlaylist(
-            Playlist playlist
-    ) {
+    public boolean updatePlaylist(Playlist playlist) {
 
         if (playlist == null) {
             return false;
@@ -101,11 +74,7 @@ public class PlaylistServiceImpl
             return false;
         }
 
-        if (playlist.getDateCreated() == null ||
-                playlist.getDateCreated()
-                        .trim()
-                        .isEmpty()) {
-
+        if (playlist.getDateCreated() == null || playlist.getDateCreated().trim().isEmpty()) {
             return false;
         }
 
@@ -113,11 +82,7 @@ public class PlaylistServiceImpl
             return false;
         }
 
-        return playlistRepo.updatePlaylist(
-                playlist.getDateCreated().trim(),
-                playlist.getUserId(),
-                playlist.getId()
-        );
+        return playlistRepo.updatePlaylist(playlist.getDateCreated().trim(), playlist.getUserId(), playlist.getId());
     }
 
     @Override
@@ -131,21 +96,13 @@ public class PlaylistServiceImpl
     }
 
     @Override
-    public boolean deletePlaylist(
-            int playlistId,
-            int userId
-    ) {
+    public boolean deletePlaylist(int playlistId, int userId) {
 
-        if (playlistId <= 0 ||
-                userId <= 0) {
-
+        if (playlistId <= 0 || userId <= 0) {
             return false;
         }
 
-        Playlist playlist =
-                playlistRepo.readPlaylistById(
-                        playlistId
-                );
+        Playlist playlist = playlistRepo.readPlaylistById(playlistId);
 
         if (playlist == null) {
 
@@ -153,16 +110,10 @@ public class PlaylistServiceImpl
         }
 
         if (playlist.getUserId() != userId) {
-
-            System.out.println(
-                    "You can only delete your own playlist."
-            );
-
+            System.out.println("You can only delete your own playlist.");
             return false;
         }
 
-        return playlistRepo.deletePlaylist(
-                playlistId
-        );
+        return playlistRepo.deletePlaylist(playlistId);
     }
 }

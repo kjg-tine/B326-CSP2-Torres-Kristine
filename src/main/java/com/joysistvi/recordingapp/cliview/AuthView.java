@@ -10,10 +10,7 @@ public class AuthView {
     private final UserController userController;
     private final Scanner scanner;
 
-    public AuthView(
-            UserController userController,
-            Scanner scanner
-    ) {
+    public AuthView(UserController userController, Scanner scanner) {
         this.userController = userController;
         this.scanner = scanner;
     }

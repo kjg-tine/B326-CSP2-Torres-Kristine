@@ -123,14 +123,13 @@ public class ArtistView {
 
         if (isSuccess) {
             System.out.println();
-            viewAllArtists(); // read-after-write
+            viewAllArtists();
         }
     }
 
     public void updateArtist() {
         System.out.println("\n----- Update Artists -----");
 
-        // Show all artists first so the admin can see which ID to pick
         viewAllArtists();
 
         int id = readInt("Artists ID to update: ");
@@ -155,13 +154,13 @@ public class ArtistView {
 
         if (isSuccess) {
             System.out.println();
-            viewAllArtists(); // read-after-write / refresh-after-mutation
+            viewAllArtists();
         }
     }
 
     private void archiveArtist() {
         System.out.println("\n----- Archive Artist -----");
-        viewAllArtists(); // Pinapakita muna ang active artists
+        viewAllArtists();
 
         int id = readInt("Enter Artist ID to archive: ");
 
@@ -170,13 +169,13 @@ public class ArtistView {
 
         if (isSuccess) {
             System.out.println();
-            viewAllArtists(); // read-after-write
+            viewAllArtists();
         }
     }
 
     private void restoreArtist() {
         System.out.println("\n----- Restore Artist -----");
-        viewAllArchivedArtists(); // Pinapakita muna ang archived artists
+        viewAllArchivedArtists();
 
         int id = readInt("Enter Artist ID to restore: ");
 
@@ -185,13 +184,13 @@ public class ArtistView {
 
         if (isSuccess) {
             System.out.println();
-            viewAllArchivedArtists(); // read-after-write
+            viewAllArchivedArtists();
         }
     }
 
     private void deleteArtist() {
         System.out.println("\n----- Delete Artist -----");
-        viewAllArchivedArtists(); // Pinapakita muna ang archived artists
+        viewAllArchivedArtists();
 
         int id = readInt("Enter Artist ID to delete permanently: ");
 
@@ -200,7 +199,7 @@ public class ArtistView {
 
         if (isSuccess) {
             System.out.println();
-            viewAllArchivedArtists(); // read-after-write
+            viewAllArchivedArtists();
         }
     }
 
