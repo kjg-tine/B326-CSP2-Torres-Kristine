@@ -3,7 +3,9 @@ package com.joysistvi.recordingapp.repository;
 import com.joysistvi.recordingapp.config.DbConnection;
 import com.joysistvi.recordingapp.model.Playlist;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,112 +22,278 @@ public class PlaylistRepoImpl implements PlaylistRepo {
 
         List<Playlist> playlists = new ArrayList<>();
 
-        String query = "SELECT * FROM playlists";
+        String sql =
+                "SELECT * FROM playlists";
 
-        try (Connection conn = dbConnection.connect();
-             Statement stmnt = conn.createStatement();
-             ResultSet result = stmnt.executeQuery(query)) {
+        try (
+                Connection connection =
+                        dbConnection.connect();
 
-            while (result.next()) {
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement(sql);
 
-                int id = result.getInt("id");
-                String dateCreated = result.getString("date_created");
-                int userId = result.getInt("user_id");
+                ResultSet resultSet =
+                        preparedStatement.executeQuery()
+        ) {
+
+            while (resultSet.next()) {
+
+                int id =
+                        resultSet.getInt("id");
+
+                String dateCreated =
+                        resultSet.getString("date_created");
+
+                int userId =
+                        resultSet.getInt("user_id");
 
                 playlists.add(
-                        new Playlist(id, dateCreated, userId)
+                        new Playlist(
+                                id,
+                                dateCreated,
+                                userId
+                        )
                 );
             }
 
-        } catch (SQLException e) {
-            System.err.println("Get All Playlists: " + e.getMessage());
+        } catch (Exception e) {
+
+            System.out.println(
+                    "Error retrieving playlists: "
+                            + e.getMessage()
+            );
         }
 
         return playlists;
     }
 
+    // ========================================
+    // GET PLAYLISTS BY USER ID
+    // ========================================
+
+    @Override
+    public List<Playlist> getPlaylistsByUserId(int userId) {
+
+        List<Playlist> playlists =
+                new ArrayList<>();
+
+        String sql =
+                "SELECT * FROM playlists WHERE user_id = ?";
+
+        try (
+                Connection connection =
+                        dbConnection.connect();
+
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement(sql)
+        ) {
+
+            preparedStatement.setInt(
+                    1,
+                    userId
+            );
+
+            ResultSet resultSet =
+                    preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+
+                int id =
+                        resultSet.getInt("id");
+
+                String dateCreated =
+                        resultSet.getString("date_created");
+
+                int foundUserId =
+                        resultSet.getInt("user_id");
+
+                playlists.add(
+                        new Playlist(
+                                id,
+                                dateCreated,
+                                foundUserId
+                        )
+                );
+            }
+
+        } catch (Exception e) {
+
+            System.out.println(
+                    "Error retrieving user playlists: "
+                            + e.getMessage()
+            );
+        }
+
+        return playlists;
+    }
+
+    // ========================================
+    // GET PLAYLIST BY ID
+    // ========================================
+
     @Override
     public Playlist readPlaylistById(int id) {
 
-        String query = "SELECT * FROM playlists WHERE id = ?";
+        String sql =
+                "SELECT * FROM playlists WHERE id = ?";
 
-        try (Connection conn = dbConnection.connect();
-             PreparedStatement prep = conn.prepareStatement(query)) {
+        try (
+                Connection connection =
+                        dbConnection.connect();
 
-            prep.setInt(1, id);
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement(sql)
+        ) {
 
-            try (ResultSet result = prep.executeQuery()) {
+            preparedStatement.setInt(
+                    1,
+                    id
+            );
 
-                if (result.next()) {
+            ResultSet resultSet =
+                    preparedStatement.executeQuery();
 
-                    return new Playlist(
-                            result.getInt("id"),
-                            result.getString("date_created"),
-                            result.getInt("user_id")
-                    );
-                }
+            if (resultSet.next()) {
+
+                int playlistId =
+                        resultSet.getInt("id");
+
+                String dateCreated =
+                        resultSet.getString("date_created");
+
+                int userId =
+                        resultSet.getInt("user_id");
+
+                return new Playlist(
+                        playlistId,
+                        dateCreated,
+                        userId
+                );
             }
 
-        } catch (SQLException e) {
-            System.err.println("Read Playlist By ID: " + e.getMessage());
+        } catch (Exception e) {
+
+            System.out.println(
+                    "Error retrieving playlist: "
+                            + e.getMessage()
+            );
         }
 
         return null;
     }
 
+    // ========================================
+    // SEARCH PLAYLIST
+    // ========================================
+
     @Override
-    public List<Playlist> searchPlaylist(String keyword) {
+    public List<Playlist> searchPlaylist(
+            String keyword
+    ) {
 
-        List<Playlist> playlists = new ArrayList<>();
+        List<Playlist> playlists =
+                new ArrayList<>();
 
-        String query =
-                "SELECT * FROM playlists WHERE date_created LIKE ?";
+        String sql =
+                "SELECT * FROM playlists " +
+                        "WHERE date_created LIKE ?";
 
-        try (Connection conn = dbConnection.connect();
-             PreparedStatement prep = conn.prepareStatement(query)) {
+        try (
+                Connection connection =
+                        dbConnection.connect();
 
-            prep.setString(1, "%" + keyword + "%");
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement(sql)
+        ) {
 
-            try (ResultSet result = prep.executeQuery()) {
+            preparedStatement.setString(
+                    1,
+                    "%" + keyword + "%"
+            );
 
-                while (result.next()) {
+            ResultSet resultSet =
+                    preparedStatement.executeQuery();
 
-                    playlists.add(
-                            new Playlist(
-                                    result.getInt("id"),
-                                    result.getString("date_created"),
-                                    result.getInt("user_id")
-                            )
-                    );
-                }
+            while (resultSet.next()) {
+
+                int id =
+                        resultSet.getInt("id");
+
+                String dateCreated =
+                        resultSet.getString("date_created");
+
+                int userId =
+                        resultSet.getInt("user_id");
+
+                playlists.add(
+                        new Playlist(
+                                id,
+                                dateCreated,
+                                userId
+                        )
+                );
             }
 
-        } catch (SQLException e) {
-            System.err.println("Search Playlist: " + e.getMessage());
+        } catch (Exception e) {
+
+            System.out.println(
+                    "Error searching playlists: "
+                            + e.getMessage()
+            );
         }
 
         return playlists;
     }
 
+    // ========================================
+    // CREATE PLAYLIST
+    // ========================================
+
     @Override
-    public boolean createPlaylist(String dateCreated, int userId) {
+    public boolean createPlaylist(
+            String dateCreated,
+            int userId
+    ) {
 
-        String query =
-                "INSERT INTO playlists (date_created, user_id) VALUES (?, ?)";
+        String sql =
+                "INSERT INTO playlists " +
+                        "(date_created, user_id) " +
+                        "VALUES (?, ?)";
 
-        try (Connection conn = dbConnection.connect();
-             PreparedStatement prep = conn.prepareStatement(query)) {
+        try (
+                Connection connection =
+                        dbConnection.connect();
 
-            prep.setString(1, dateCreated);
-            prep.setInt(2, userId);
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement(sql)
+        ) {
 
-            return prep.executeUpdate() > 0;
+            preparedStatement.setString(
+                    1,
+                    dateCreated
+            );
 
-        } catch (SQLException e) {
-            System.err.println("Create Playlist: " + e.getMessage());
-            return false;
+            preparedStatement.setInt(
+                    2,
+                    userId
+            );
+
+            return preparedStatement.executeUpdate() > 0;
+
+        } catch (Exception e) {
+
+            System.out.println(
+                    "Error creating playlist: "
+                            + e.getMessage()
+            );
         }
+
+        return false;
     }
+
+    // ========================================
+    // UPDATE PLAYLIST
+    // ========================================
 
     @Override
     public boolean updatePlaylist(
@@ -134,39 +302,135 @@ public class PlaylistRepoImpl implements PlaylistRepo {
             int id
     ) {
 
-        String query =
-                "UPDATE playlists SET date_created = ?, user_id = ? WHERE id = ?";
+        String sql =
+                "UPDATE playlists " +
+                        "SET date_created = ?, user_id = ? " +
+                        "WHERE id = ?";
 
-        try (Connection conn = dbConnection.connect();
-             PreparedStatement prep = conn.prepareStatement(query)) {
+        try (
+                Connection connection =
+                        dbConnection.connect();
 
-            prep.setString(1, dateCreated);
-            prep.setInt(2, userId);
-            prep.setInt(3, id);
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement(sql)
+        ) {
 
-            return prep.executeUpdate() > 0;
+            preparedStatement.setString(
+                    1,
+                    dateCreated
+            );
 
-        } catch (SQLException e) {
-            System.err.println("Update Playlist: " + e.getMessage());
-            return false;
+            preparedStatement.setInt(
+                    2,
+                    userId
+            );
+
+            preparedStatement.setInt(
+                    3,
+                    id
+            );
+
+            return preparedStatement.executeUpdate() > 0;
+
+        } catch (Exception e) {
+
+            System.out.println(
+                    "Error updating playlist: "
+                            + e.getMessage()
+            );
         }
+
+        return false;
     }
+
+    // ========================================
+    // DELETE PLAYLIST
+    // ========================================
 
     @Override
     public boolean deletePlaylist(int id) {
 
-        String query = "DELETE FROM playlists WHERE id = ?";
+        String deletePlaylistSongsSql =
+                "DELETE FROM playlist_songs WHERE playlist_id = ?";
 
-        try (Connection conn = dbConnection.connect();
-             PreparedStatement prep = conn.prepareStatement(query)) {
+        String deletePlaylistSql =
+                "DELETE FROM playlists WHERE id = ?";
 
-            prep.setInt(1, id);
+        try (
+                Connection connection =
+                        dbConnection.connect()
+        ) {
 
-            return prep.executeUpdate() > 0;
+            // Start transaction
+            connection.setAutoCommit(false);
 
-        } catch (SQLException e) {
-            System.err.println("Delete Playlist: " + e.getMessage());
-            return false;
+            try (
+                    PreparedStatement deletePlaylistSongs =
+                            connection.prepareStatement(
+                                    deletePlaylistSongsSql
+                            );
+
+                    PreparedStatement deletePlaylist =
+                            connection.prepareStatement(
+                                    deletePlaylistSql
+                            )
+            ) {
+
+                // ========================================
+                // DELETE SONGS FROM PLAYLIST
+                // ========================================
+
+                deletePlaylistSongs.setInt(
+                        1,
+                        id
+                );
+
+                deletePlaylistSongs.executeUpdate();
+
+                // ========================================
+                // DELETE PLAYLIST
+                // ========================================
+
+                deletePlaylist.setInt(
+                        1,
+                        id
+                );
+
+                int rowsDeleted =
+                        deletePlaylist.executeUpdate();
+
+                // ========================================
+                // COMMIT
+                // ========================================
+
+                if (rowsDeleted > 0) {
+
+                    connection.commit();
+
+                    return true;
+                }
+
+                // Nothing was deleted
+                connection.rollback();
+
+            } catch (Exception e) {
+
+                connection.rollback();
+
+                System.out.println(
+                        "Error deleting playlist: "
+                                + e.getMessage()
+                );
+            }
+
+        } catch (Exception e) {
+
+            System.out.println(
+                    "Error connecting to database: "
+                            + e.getMessage()
+            );
         }
+
+        return false;
     }
 }

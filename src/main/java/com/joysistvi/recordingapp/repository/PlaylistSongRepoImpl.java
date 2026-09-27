@@ -92,24 +92,84 @@ public class PlaylistSongRepoImpl implements PlaylistSongRepo {
             int songId
     ) {
 
-        String query =
+        String checkSql =
+                "SELECT id FROM playlist_songs " +
+                        "WHERE playlist_id = ? AND song_id = ?";
+
+        String insertSql =
                 "INSERT INTO playlist_songs " +
-                        "(playlist_id, song_id) VALUES (?, ?)";
+                        "(playlist_id, song_id) " +
+                        "VALUES (?, ?)";
 
-        try (Connection conn = dbConnection.connect();
-             PreparedStatement prep = conn.prepareStatement(query)) {
+        try (
+                Connection connection =
+                        dbConnection.connect();
 
-            prep.setInt(1, playlistId);
-            prep.setInt(2, songId);
+                PreparedStatement checkStatement =
+                        connection.prepareStatement(
+                                checkSql
+                        )
+        ) {
 
-            return prep.executeUpdate() > 0;
+            // ========================================
+            // CHECK IF ALREADY EXISTS
+            // ========================================
 
-        } catch (SQLException e) {
-            System.err.println(
-                    "Add Song To Playlist: " + e.getMessage()
+            checkStatement.setInt(
+                    1,
+                    playlistId
             );
-            return false;
+
+            checkStatement.setInt(
+                    2,
+                    songId
+            );
+
+            ResultSet resultSet =
+                    checkStatement.executeQuery();
+
+            if (resultSet.next()) {
+
+                System.out.println(
+                        "Song is already in this playlist."
+                );
+
+                return false;
+            }
+
+            // ========================================
+            // ADD SONG
+            // ========================================
+
+            try (
+                    PreparedStatement insertStatement =
+                            connection.prepareStatement(
+                                    insertSql
+                            )
+            ) {
+
+                insertStatement.setInt(
+                        1,
+                        playlistId
+                );
+
+                insertStatement.setInt(
+                        2,
+                        songId
+                );
+
+                return insertStatement.executeUpdate() > 0;
+            }
+
+        } catch (Exception e) {
+
+            System.out.println(
+                    "Error adding song to playlist: "
+                            + e.getMessage()
+            );
         }
+
+        return false;
     }
 
     @Override

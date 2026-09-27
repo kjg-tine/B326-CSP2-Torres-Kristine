@@ -5,11 +5,14 @@ import com.joysistvi.recordingapp.repository.PlaylistRepo;
 
 import java.util.List;
 
-public class PlaylistServiceImpl implements PlaylistService {
+public class PlaylistServiceImpl
+        implements PlaylistService {
 
     private final PlaylistRepo playlistRepo;
 
-    public PlaylistServiceImpl(PlaylistRepo playlistRepo) {
+    public PlaylistServiceImpl(
+            PlaylistRepo playlistRepo
+    ) {
         this.playlistRepo = playlistRepo;
     }
 
@@ -19,50 +22,63 @@ public class PlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
-    public Playlist getPlaylistById(int id) {
+    public List<Playlist> getPlaylistsByUserId(
+            int userId
+    ) {
 
-        if (id <= 0) {
-            System.out.println("Invalid playlist ID.");
-            return null;
-        }
-
-        Playlist playlist = playlistRepo.readPlaylistById(id);
-
-        if (playlist == null) {
-            System.out.println("Playlist not found.");
-        }
-
-        return playlist;
-    }
-
-    @Override
-    public List<Playlist> searchPlaylist(String keyword) {
-
-        if (keyword == null || keyword.trim().isEmpty()) {
-            System.out.println("Search keyword cannot be empty.");
+        if (userId <= 0) {
             return List.of();
         }
 
-        return playlistRepo.searchPlaylist(keyword.trim());
+        return playlistRepo.getPlaylistsByUserId(
+                userId
+        );
     }
 
     @Override
-    public boolean createPlaylist(Playlist playlist) {
+    public Playlist getPlaylistById(int id) {
+
+        if (id <= 0) {
+            return null;
+        }
+
+        return playlistRepo.readPlaylistById(id);
+    }
+
+    @Override
+    public List<Playlist> searchPlaylist(
+            String keyword
+    ) {
+
+        if (keyword == null ||
+                keyword.trim().isEmpty()) {
+
+            return List.of();
+        }
+
+        return playlistRepo.searchPlaylist(
+                keyword.trim()
+        );
+    }
+
+    @Override
+    public boolean createPlaylist(
+            Playlist playlist
+    ) {
 
         if (playlist == null) {
-            System.out.println("Playlist is required.");
             return false;
         }
 
         if (playlist.getDateCreated() == null ||
-                playlist.getDateCreated().trim().isEmpty()) {
+                playlist.getDateCreated()
+                        .trim()
+                        .isEmpty()) {
 
-            System.out.println("Date created is required.");
             return false;
         }
 
         if (playlist.getUserId() <= 0) {
-            System.out.println("Invalid user ID.");
             return false;
         }
 
@@ -73,22 +89,27 @@ public class PlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
-    public boolean updatePlaylist(Playlist playlist) {
+    public boolean updatePlaylist(
+            Playlist playlist
+    ) {
 
-        if (playlist == null || playlist.getId() <= 0) {
-            System.out.println("Invalid playlist ID.");
+        if (playlist == null) {
+            return false;
+        }
+
+        if (playlist.getId() <= 0) {
             return false;
         }
 
         if (playlist.getDateCreated() == null ||
-                playlist.getDateCreated().trim().isEmpty()) {
+                playlist.getDateCreated()
+                        .trim()
+                        .isEmpty()) {
 
-            System.out.println("Date created is required.");
             return false;
         }
 
         if (playlist.getUserId() <= 0) {
-            System.out.println("Invalid user ID.");
             return false;
         }
 
@@ -103,10 +124,45 @@ public class PlaylistServiceImpl implements PlaylistService {
     public boolean deletePlaylist(int id) {
 
         if (id <= 0) {
-            System.out.println("Invalid playlist ID.");
             return false;
         }
 
         return playlistRepo.deletePlaylist(id);
+    }
+
+    @Override
+    public boolean deletePlaylist(
+            int playlistId,
+            int userId
+    ) {
+
+        if (playlistId <= 0 ||
+                userId <= 0) {
+
+            return false;
+        }
+
+        Playlist playlist =
+                playlistRepo.readPlaylistById(
+                        playlistId
+                );
+
+        if (playlist == null) {
+
+            return false;
+        }
+
+        if (playlist.getUserId() != userId) {
+
+            System.out.println(
+                    "You can only delete your own playlist."
+            );
+
+            return false;
+        }
+
+        return playlistRepo.deletePlaylist(
+                playlistId
+        );
     }
 }

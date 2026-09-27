@@ -9,31 +9,79 @@ public class PlaylistController {
 
     private final PlaylistService playlistService;
 
-    public PlaylistController(PlaylistService playlistService) {
+    public PlaylistController(
+            PlaylistService playlistService
+    ) {
         this.playlistService = playlistService;
     }
 
     public List<Playlist> handleViewAllPlaylists() {
+
         return playlistService.getAllPlaylists();
     }
 
-    public Playlist handleGetPlaylistById(int id) {
-        return playlistService.getPlaylistById(id);
+    public List<Playlist> handleGetPlaylistsByUserId(
+            int userId
+    ) {
+
+        return playlistService.getPlaylistsByUserId(
+                userId
+        );
     }
 
-    public List<Playlist> handleSearchPlaylist(String keyword) {
-        return playlistService.searchPlaylist(keyword);
+    public Playlist handleGetPlaylistById(
+            int id
+    ) {
+
+        return playlistService.getPlaylistById(
+                id
+        );
     }
 
-    public boolean handleCreatePlaylist(Playlist playlist) {
-        return playlistService.createPlaylist(playlist);
+    public List<Playlist> handleSearchPlaylist(
+            String keyword
+    ) {
+
+        return playlistService.searchPlaylist(
+                keyword
+        );
     }
 
-    public boolean handleUpdatePlaylist(Playlist playlist) {
-        return playlistService.updatePlaylist(playlist);
+    public boolean handleCreatePlaylist(
+            Playlist playlist
+    ) {
+
+        return playlistService.createPlaylist(
+                playlist
+        );
     }
 
-    public boolean handleDeletePlaylist(int id) {
-        return playlistService.deletePlaylist(id);
+    public boolean handleUpdatePlaylist(
+            Playlist playlist
+    ) {
+
+        return playlistService.updatePlaylist(
+                playlist
+        );
+    }
+
+    public boolean handleDeletePlaylist(
+            int id
+    ) {
+
+        return playlistService.deletePlaylist(
+                id
+        );
+    }
+
+    public boolean handleDeletePlaylist(
+            int playlistId,
+            int userId
+    ) {
+
+        return playlistService.deletePlaylist(
+                playlistId,
+                userId
+        );
     }
 }

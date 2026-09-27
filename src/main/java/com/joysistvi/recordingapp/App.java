@@ -1,9 +1,14 @@
 package com.joysistvi.recordingapp;
 
+import com.joysistvi.recordingapp.cliview.AdminView;
 import com.joysistvi.recordingapp.cliview.AlbumView;
 import com.joysistvi.recordingapp.cliview.ArtistView;
+import com.joysistvi.recordingapp.cliview.AuthView;
+import com.joysistvi.recordingapp.cliview.PlaylistSongView;
 import com.joysistvi.recordingapp.cliview.PlaylistView;
 import com.joysistvi.recordingapp.cliview.SongView;
+import com.joysistvi.recordingapp.cliview.UserManagementView;
+import com.joysistvi.recordingapp.cliview.UserView;
 
 import com.joysistvi.recordingapp.config.DbConnection;
 
@@ -12,28 +17,23 @@ import com.joysistvi.recordingapp.controller.ArtistController;
 import com.joysistvi.recordingapp.controller.PlaylistController;
 import com.joysistvi.recordingapp.controller.PlaylistSongController;
 import com.joysistvi.recordingapp.controller.SongController;
+import com.joysistvi.recordingapp.controller.UserController;
 
-import com.joysistvi.recordingapp.repository.AlbumRepo;
 import com.joysistvi.recordingapp.repository.AlbumRepoImpl;
-import com.joysistvi.recordingapp.repository.ArtistRepo;
 import com.joysistvi.recordingapp.repository.ArtistRepoImpl;
-import com.joysistvi.recordingapp.repository.PlaylistRepo;
 import com.joysistvi.recordingapp.repository.PlaylistRepoImpl;
-import com.joysistvi.recordingapp.repository.PlaylistSongRepo;
 import com.joysistvi.recordingapp.repository.PlaylistSongRepoImpl;
-import com.joysistvi.recordingapp.repository.SongRepo;
 import com.joysistvi.recordingapp.repository.SongRepoImpl;
+import com.joysistvi.recordingapp.repository.UserRepoImpl;
 
-import com.joysistvi.recordingapp.service.AlbumService;
 import com.joysistvi.recordingapp.service.AlbumServiceImpl;
-import com.joysistvi.recordingapp.service.ArtistService;
 import com.joysistvi.recordingapp.service.ArtistServiceImpl;
-import com.joysistvi.recordingapp.service.PlaylistService;
 import com.joysistvi.recordingapp.service.PlaylistServiceImpl;
-import com.joysistvi.recordingapp.service.PlaylistSongService;
 import com.joysistvi.recordingapp.service.PlaylistSongServiceImpl;
-import com.joysistvi.recordingapp.service.SongService;
 import com.joysistvi.recordingapp.service.SongServiceImpl;
+import com.joysistvi.recordingapp.service.UserServiceImpl;
+
+import com.joysistvi.recordingapp.model.User;
 
 import java.util.Scanner;
 
@@ -41,23 +41,85 @@ public class App {
 
     public static void main(String[] args) {
 
-        DbConnection dbConnection = new DbConnection();
-
         Scanner scanner = new Scanner(System.in);
 
+        DbConnection dbConnection =
+                new DbConnection();
 
-        // =========================
-        // ARTIST
-        // =========================
+        // ========================================
+        // REPOSITORIES
+        // ========================================
 
-        ArtistRepo artistRepo =
+        ArtistRepoImpl artistRepo =
                 new ArtistRepoImpl(dbConnection);
 
-        ArtistService artistService =
+        AlbumRepoImpl albumRepo =
+                new AlbumRepoImpl(dbConnection);
+
+        SongRepoImpl songRepo =
+                new SongRepoImpl(dbConnection);
+
+        PlaylistRepoImpl playlistRepo =
+                new PlaylistRepoImpl(dbConnection);
+
+        PlaylistSongRepoImpl playlistSongRepo =
+                new PlaylistSongRepoImpl(dbConnection);
+
+        UserRepoImpl userRepo =
+                new UserRepoImpl(dbConnection);
+
+        // ========================================
+        // SERVICES
+        // ========================================
+
+        ArtistServiceImpl artistService =
                 new ArtistServiceImpl(artistRepo);
+
+        AlbumServiceImpl albumService =
+                new AlbumServiceImpl(albumRepo);
+
+        SongServiceImpl songService =
+                new SongServiceImpl(songRepo);
+
+        PlaylistServiceImpl playlistService =
+                new PlaylistServiceImpl(playlistRepo);
+
+        PlaylistSongServiceImpl playlistSongService =
+                new PlaylistSongServiceImpl(
+                        playlistSongRepo,
+                        playlistRepo
+                );
+
+        UserServiceImpl userService =
+                new UserServiceImpl(userRepo);
+
+        // ========================================
+        // CONTROLLERS
+        // ========================================
 
         ArtistController artistController =
                 new ArtistController(artistService);
+
+        AlbumController albumController =
+                new AlbumController(albumService);
+
+        SongController songController =
+                new SongController(songService);
+
+        PlaylistController playlistController =
+                new PlaylistController(playlistService);
+
+        PlaylistSongController playlistSongController =
+                new PlaylistSongController(
+                        playlistSongService
+                );
+
+        UserController userController =
+                new UserController(userService);
+
+        // ========================================
+        // VIEWS
+        // ========================================
 
         ArtistView artistView =
                 new ArtistView(
@@ -65,149 +127,126 @@ public class App {
                         scanner
                 );
 
-
-        // =========================
-        // SONG
-        // =========================
-
-        SongRepo songRepo =
-                new SongRepoImpl(dbConnection);
-
-        SongService songService =
-                new SongServiceImpl(songRepo);
-
-        SongController songController =
-                new SongController(songService);
-
-        SongView songView =
-                new SongView(
-                        songController,
-                        scanner
-                );
-
-
-        // =========================
-        // ALBUM
-        // =========================
-
-        AlbumRepo albumRepo =
-                new AlbumRepoImpl(dbConnection);
-
-        AlbumService albumService =
-                new AlbumServiceImpl(albumRepo);
-
-        AlbumController albumController =
-                new AlbumController(albumService);
-
         AlbumView albumView =
                 new AlbumView(
                         albumController,
                         scanner
                 );
 
+        SongView songView =
+                new SongView(
+                        songController,
+                        albumController,
+                        scanner
+                );
 
-        // =========================
-        // PLAYLIST
-        // =========================
-
-        PlaylistRepo playlistRepo =
-                new PlaylistRepoImpl(dbConnection);
-
-        PlaylistService playlistService =
-                new PlaylistServiceImpl(playlistRepo);
-
-        PlaylistController playlistController =
-                new PlaylistController(playlistService);
-
-
-        // =========================
-        // PLAYLIST SONG
-        // =========================
-
-        PlaylistSongRepo playlistSongRepo =
-                new PlaylistSongRepoImpl(dbConnection);
-
-        PlaylistSongService playlistSongService =
-                new PlaylistSongServiceImpl(playlistSongRepo);
-
-        PlaylistSongController playlistSongController =
-                new PlaylistSongController(playlistSongService);
-
+        PlaylistSongView playlistSongView =
+                new PlaylistSongView(
+                        playlistSongController,
+                        songController,
+                        scanner
+                );
 
         PlaylistView playlistView =
                 new PlaylistView(
                         playlistController,
                         playlistSongController,
+                        songController,
+                        userController,
                         scanner
                 );
 
-
-        // =========================
-        // MAIN MENU
-        // =========================
-
-        int choice = -1;
-
-        do {
-
-            System.out.println("\n==============================");
-            System.out.println("       RECORDING APP");
-            System.out.println("==============================");
-            System.out.println("1. Artist");
-            System.out.println("2. Album");
-            System.out.println("3. Song");
-            System.out.println("4. Playlist");
-            System.out.println("0. Exit");
-            System.out.println("==============================");
-
-            System.out.print("Enter choice: ");
-
-            try {
-
-                choice = Integer.parseInt(
-                        scanner.nextLine().trim()
+        AuthView authView =
+                new AuthView(
+                        userController,
+                        scanner
                 );
 
-                switch (choice) {
+        AdminView adminView = null;
 
-                    case 1:
-                        artistView.run();
-                        break;
+        // ========================================
+        // APPLICATION LOOP
+        // ========================================
 
-                    case 2:
-                        albumView.run();
-                        break;
+        boolean running = true;
 
-                    case 3:
-                        songView.run();
-                        break;
+        while (running) {
 
-                    case 4:
-                        playlistView.run();
-                        break;
+            System.out.println();
+            System.out.println(
+                    "========================================"
+            );
+            System.out.println(
+                    "       STUDIO RECORDING APP"
+            );
+            System.out.println(
+                    "========================================"
+            );
 
-                    case 0:
-                        System.out.println(
-                                "Thank you for using Recording App!"
-                        );
-                        break;
+            User loggedInUser =
+                    authView.run();
 
-                    default:
-                        System.out.println(
-                                "Invalid option. Please try again."
-                        );
-                }
+            if (loggedInUser == null) {
 
-            } catch (NumberFormatException e) {
-
+                System.out.println();
                 System.out.println(
-                        "Invalid input. Please enter a number."
+                        "Thank you for using "
+                                + "Studio Recording App!"
                 );
 
-                choice = -1;
+                running = false;
+                break;
             }
 
-        } while (choice != 0);
+            // ========================================
+            // ADMIN
+            // ========================================
+
+            if (loggedInUser.getRole()
+                    .equalsIgnoreCase("admin")) {
+
+                UserManagementView userManagementView =
+                        new UserManagementView(
+                                userController,
+                                scanner,
+                                loggedInUser
+                        );
+
+                adminView =
+                        new AdminView(
+                                scanner,
+                                artistView,
+                                albumView,
+                                songView,
+                                playlistView,
+                                playlistSongView,
+                                userManagementView
+                        );
+
+                adminView.run();
+
+            }
+
+            // ========================================
+            // NORMAL USER
+            // ========================================
+
+            else {
+
+                UserView userView =
+                        new UserView(
+                                scanner,
+                                loggedInUser,
+                                artistController,
+                                albumController,
+                                songController,
+                                playlistController,
+                                playlistSongController
+                        );
+
+                userView.run();
+            }
+        }
 
         scanner.close();
     }

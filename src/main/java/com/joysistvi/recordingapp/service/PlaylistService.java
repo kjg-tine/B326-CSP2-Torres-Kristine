@@ -8,13 +8,32 @@ public interface PlaylistService {
 
     List<Playlist> getAllPlaylists();
 
-    Playlist getPlaylistById(int id);
+    List<Playlist> getPlaylistsByUserId(
+            int userId
+    );
 
-    List<Playlist> searchPlaylist(String keyword);
+    Playlist getPlaylistById(
+            int id
+    );
 
-    boolean createPlaylist(Playlist playlist);
+    List<Playlist> searchPlaylist(
+            String keyword
+    );
 
-    boolean updatePlaylist(Playlist playlist);
+    boolean createPlaylist(
+            Playlist playlist
+    );
 
-    boolean deletePlaylist(int id);
+    boolean updatePlaylist(
+            Playlist playlist
+    );
+
+    boolean deletePlaylist(
+            int id
+    );
+
+    boolean deletePlaylist(
+            int playlistId,
+            int userId
+    );
 }
