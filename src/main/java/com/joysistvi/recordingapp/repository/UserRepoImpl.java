@@ -40,20 +40,20 @@ public class UserRepoImpl implements UserRepo {
     }
 
     @Override
-    public User loginUser(String username, String password) {
+    public User loginUser(String username) {
 
-        String sql = "SELECT * FROM users " + "WHERE username = ? AND password = ?";
+        String sql = "SELECT * FROM users WHERE username = ?";
 
         try (Connection connection = dbConnection.connect();
              PreparedStatement statement = connection.prepareStatement(sql)
         ) {
 
             statement.setString(1, username);
-            statement.setString(2, password);
 
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
+
                 return new User(
                         resultSet.getInt("id"),
                         resultSet.getString("username"),
@@ -63,7 +63,10 @@ public class UserRepoImpl implements UserRepo {
             }
 
         } catch (Exception e) {
-            System.out.println("Error logging in: " + e.getMessage());
+
+            System.out.println(
+                    "Error logging in: " + e.getMessage()
+            );
         }
 
         return null;

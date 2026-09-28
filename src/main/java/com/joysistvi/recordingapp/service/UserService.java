@@ -15,6 +15,8 @@ public interface UserService {
     List<User> getAllUsers();
 
     boolean updateUserRole(int id, String role);
+
     boolean deleteUser(int id);
+
     boolean usernameExists(String username);
 }

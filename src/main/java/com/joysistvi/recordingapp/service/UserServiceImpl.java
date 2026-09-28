@@ -2,6 +2,7 @@ package com.joysistvi.recordingapp.service;
 
 import com.joysistvi.recordingapp.model.User;
 import com.joysistvi.recordingapp.repository.UserRepo;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.List;
 
@@ -33,7 +34,16 @@ public class UserServiceImpl implements UserService {
             return false;
         }
 
-        return userRepo.registerUser(username, password);
+        String hashedPassword =
+                BCrypt.hashpw(
+                        password,
+                        BCrypt.gensalt()
+                );
+
+        return userRepo.registerUser(
+                username,
+                hashedPassword
+        );
     }
 
     @Override
@@ -47,7 +57,26 @@ public class UserServiceImpl implements UserService {
             return null;
         }
 
-        return userRepo.loginUser(username, password);
+        username = username.trim();
+
+        User user =
+                userRepo.loginUser(username);
+
+        if (user == null) {
+            return null;
+        }
+
+        boolean passwordMatches =
+                BCrypt.checkpw(
+                        password,
+                        user.getPassword()
+                );
+
+        if (!passwordMatches) {
+            return null;
+        }
+
+        return user;
     }
 
     @Override
